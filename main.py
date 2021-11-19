@@ -33,7 +33,7 @@ for i in range(len(offers)):
     print(company_name)
     salary = offer.find(class_='salary' ).text
     print(salary)
-
+    
 
 
 
