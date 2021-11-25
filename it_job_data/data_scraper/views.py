@@ -75,3 +75,6 @@ def jjit_offers(request):
     data.analyze_offers()
     response = Offer.objects.all()
     return HttpResponse(response)
+
+def home_page(request):
+    return render(request, 'data_scraper/homepage.html', context={'name':'world'})
