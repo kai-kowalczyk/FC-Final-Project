@@ -1,5 +1,4 @@
 from django.db import models
-from django.db.models.fields import CharField
 
 # Create your models here.
 class Offer(models.Model):
@@ -12,5 +11,8 @@ class Offer(models.Model):
     skills = models.CharField(max_length=200)
     min_salary = models.IntegerField()
     max_salary = models.IntegerField()
-    created_at = models.DateTimeField(auto_now_add=True,editable=False)
+    created_at = models.DateTimeField(auto_now_add=True, editable=False)
     updated_at = models.DateTimeField(auto_now=True, editable=False) 
+
+    def __str__(self):
+        return f'Oferta z: {self.from_site},\n {self.offer_full_link} \n'

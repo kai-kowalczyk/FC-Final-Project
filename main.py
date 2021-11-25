@@ -1,7 +1,5 @@
 import requests
 from bs4 import BeautifulSoup
-import json
-import random
 
 #JUSTJOIN.IT OFFERS
 class JJitOffers:
@@ -9,6 +7,7 @@ class JJitOffers:
     BASE_URL = 'https://justjoin.it/api/offers'
 
     def __init__(self):
+        self.source = 'justjoin.it'
         self.jjit_offers = self.get_offers()
 
     def get_offers(self):
@@ -16,32 +15,38 @@ class JJitOffers:
         
 
     def analyze_offers(self):  
-        for i in range(0,10):
+        for i in range(0,50):
             offer = self.jjit_offers[i]
             #print(offer)
+            print(f'@@@@@@@@@ NUMER {i} @@@@@@@@@@@@@@')
             offer_id = offer['id']
             print(f'******{offer_id}****** \n')
             offer_full_link = f'https://justjoin.it/offers/{offer_id}'
-            #print(f'#####{offer_full_link}##### \n')
+            print(f'1)###{offer_full_link}### \n')
             position_title = offer['title']
-            #print(f'#####{position_title}##### \n')
+            print(f'2)#####{position_title}##### \n')
             exp_lvl = offer['experience_level']
-            #print(f'#####{exp_lvl}##### \n')
+            print(f'3)#####{exp_lvl}##### \n')
             company_name = offer['company_name']
-            #print(f'#####{company_name}##### \n')
+            print(f'4)#####{company_name}##### \n')
             min_salary = self.path(offer, 'employment_types.0.salary.from', 'undisclosed min_salary')
-            min_salary2 = offer['employment_types'][0]['salary']['from']
-            print(f'#####{min_salary}##### \n')
-            print(min_salary2)
+            #min_salary2 = offer['employment_types'][0]['salary']['from']
+            #print(f'5)#####{min_salary}##### \n')
+            #print(min_salary2)
             max_salary = self.path(offer, 'employment_types.0.salary.to', 'undisclosed max_salary')
-            max_salary2 = offer['employment_types'][0]['salary']['to']
-            print(f'#####{max_salary}##### \n')
-            print(max_salary2)
+            #max_salary2 = offer['employment_types'][0]['salary']['to']
+            #print(f'6)#####{max_salary}##### \n')
+            #print(max_salary2)
+            if min_salary == 'undisclosed min_salary' or max_salary == 'undisclosed min_salary':
+                min_salary = self.path(offer, 'employment_types.1.salary.from', 'undisclosed min_salary2')
+                print(f'5)#####{min_salary}##### \n')
+                max_salary = self.path(offer, 'employment_types.1.salary.to', 'undisclosed max_salary2')
+                print(f'6)#####{max_salary}##### \n')
             skills = []
             for i in range(len(offer['skills'])):
                 skill = offer['skills'][i]['name']
                 skills.append(skill)
-            #print(f'#####{skills}##### \n')
+            print(f'7)#####{skills}##### \n')
         '''except Exception as error:
             print(f'{type(error).__name__} was raised: {error}')
         finally:
@@ -59,12 +64,13 @@ class JJitOffers:
         for piece in p.split('.'):
             print(piece)
             if isinstance(curr, dict) and piece in curr:
-                print('piece in curr')
+                print('path - piece in curr - dict')
                 curr = curr[piece]
             elif isinstance(curr, list) and len(curr) > int(piece):
+                print('path - piece in curr - list')
                 curr = curr[int(piece)]
             else:
-                print('else')
+                print('path else')
                 return d
         return curr
         
@@ -84,7 +90,7 @@ class NFJOffers:
 
     def get_nfj_data(self, seniority, page_nr='1'):
         self.nfj_html = requests.get(f'{self.BASE_URL}/pl/praca-it?criteria=seniority%3D{seniority}&page={page_nr}').text
-        #parse the html
+#parse the html
         self.nfj_webpage = BeautifulSoup(self.nfj_html, 'lxml')
 
     def pick_max_page(self):
@@ -92,8 +98,18 @@ class NFJOffers:
         page_number_links = self.nfj_webpage.find_all(class_='page-link')
         number_of_pages = []
         for i in range(1, len(page_number_links)-1):
-            number_of_pages.append(page_number_links[i].text)   
-        self.max_page_number = int(max(number_of_pages))
+            number = page_number_links[i].text
+            try:
+                number_of_pages.append(int(number))
+            except ValueError:
+                print('znak inny niż cyfra')
+                return False
+            finally:
+                continue
+        print(number_of_pages)  
+        self.max_page_number = max(number_of_pages)
+        print(self.max_page_number)
+        print(type(self.max_page_number))
 
     def get_offers(self):
 #find all the 'offer' items on the page
@@ -101,7 +117,7 @@ class NFJOffers:
 
     def analyze_offers(self):
 #get all the needed information from the offer
-        for i in range(0,10):
+        for i in range(0, len(self.offers) + 1):
             try:
                 offer = self.offers[i]
                 offer_id = offer.get('id')
@@ -110,16 +126,18 @@ class NFJOffers:
                 offer_full_link = f'https://nofluffjobs.com{offer_link}'
                 #print(f'########{offer_full_link}######## \n')
                 position_title = offer.find('h3', class_='posting-title__position').text
-                #print(f'#######{position_title}########## \n')
+                print(f'#######{position_title}########## \n')
                 company_name = offer.find('span', class_='posting-title__company').text
                 #print(f'#######{company_name}########## \n')
                 salary = offer.find(class_='salary' ).text
-                splitted_salary = salary.split(' - ')
-                min_salary = splitted_salary[0]
-                print(f'#######{min_salary}########## \n')
-                max_salary = splitted_salary[1]
-                print(f'#######{max_salary}########## \n')
-
+                try:
+                    splitted_salary = salary.split(' - ')
+                    min_salary = splitted_salary[0]
+                    #print(f'#######{min_salary}########## \n')
+                    max_salary = splitted_salary[1]
+                    #print(f'#######{max_salary}########## \n')
+                except IndexError:            
+                    print('Brak widełek płacowych')
                 inside_offer = NFJAnalyzeOffer()
                 skills = inside_offer.read_skills(offer_full_link)
                 '''offer_html = requests.get(offer_full_link).text
@@ -138,10 +156,13 @@ class NFJOffers:
     def get_all_offers(self):
         for element in self.seniority:
             seniority = element
+            print(f'for seniority: {element}')
             self.get_nfj_data(seniority)
             self.pick_max_page()
-            for page in range(1, self.max_page_number + 1):
+            print(f'pick max page @@@@@@@@@@@@@@@ max page nr: {self.max_page_number}')
+            for page in range(1, int(self.max_page_number) + 1):
                 self.get_nfj_data(seniority, page_nr=page)
+                print(f'for page: @@@@@@@@@@@@@ seniority: {seniority} \n @@@@@@@@ page: {page}')                
                 self.get_offers()
                 self.analyze_offers()
 
@@ -159,11 +180,12 @@ class NFJAnalyzeOffer:
             skill = required[i]
             skills.append(skill.find(class_='btn').text)
         return skills
-        print(f'#######{skills}########## \n')
                 
 
 
 #nfj = NFJOffers()
+#nfj.get_nfj_data(seniority='trainee')
+#nfj.pick_max_page()
 #nfj.get_all_offers()
 
 jjit = JJitOffers()
