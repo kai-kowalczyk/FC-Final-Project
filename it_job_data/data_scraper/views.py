@@ -21,7 +21,7 @@ class JJitOffers:
         
 
     def analyze_offers(self):  
-        for i in range(0,20):
+        for i in range(0, len(self.jjit_offers)):
             offer = self.jjit_offers[i]
             #print(offer)
             print(f'@@@@@@@@@ NUMER OFERTY {i} @@@@@@@@@@@@@@')
