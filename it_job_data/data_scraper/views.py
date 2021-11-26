@@ -2,12 +2,17 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Offer
 import requests
+from bs4 import BeautifulSoup
+import random
+import time
+import traceback
+import re
 # Create your views here.
 
 def index(request):
     return HttpResponse("Hello, world. You're at the data_scraper index.")
 
-
+#JJIT offers
 class JJitOffers:
 
     BASE_URL = 'https://justjoin.it/api/offers'
@@ -70,10 +75,118 @@ class JJitOffers:
                 return d
         return curr
 
-def jjit_offers(request):
-    data = JJitOffers()
-    data.analyze_offers()
-    response = Offer.objects.all()
+#NFJ offers
+class NFJOffers:
+
+    BASE_URL = 'https://nofluffjobs.com'
+
+    def __init__(self):
+        self.source = 'nofluffjobs.com'
+        self.seniority = ['trainee', 'junior', 'mid', 'senior', 'expert']
+        self.page_number = 1
+        self.max_page_number = 0
+
+    def get_nfj_data(self, seniority, page_nr='1'):
+        self.nfj_html = requests.get(f'{self.BASE_URL}/pl/praca-it?criteria=seniority%3D{seniority}&page={page_nr}').text
+#parse the html
+        self.nfj_webpage = BeautifulSoup(self.nfj_html, 'lxml')
+
+    def pick_max_page(self):
+#find out how many pages of results there are and pick the highest number
+        page_number_links = self.nfj_webpage.find_all(class_='page-link')
+        number_of_pages = []
+        for i in range(1, len(page_number_links)-1):
+            number = page_number_links[i].text
+            try:
+                number_of_pages.append(int(number))
+            except ValueError:
+                print('znak inny niż cyfra')
+                return False
+            finally:
+                continue  
+        self.max_page_number = max(number_of_pages)
+
+    def get_offers(self):
+#find all the 'offer' items on the page
+        self.offers = self.nfj_webpage.find_all('a', class_='posting-list-item')
+
+    def analyze_offers(self, seniority):
+#get all the needed information from the offer
+        for i in range(0, len(self.offers) + 1):
+            try:
+                offer = self.offers[i]
+                offer_id = offer.get('id')
+                #print(f'*******{offer_id}******* \n')
+                offer_link = offer.get('href')
+                offer_full_link = f'https://nofluffjobs.com{offer_link}'
+                #print(f'########{offer_full_link}######## \n')
+                position_title = offer.find('h3', class_='posting-title__position').text
+                #print(f'#######{position_title}########## \n')
+                company_name = offer.find('span', class_='posting-title__company').text
+                #print(f'#######{company_name}########## \n')
+                salary = offer.find(class_='salary').text
+                print(salary)
+                try:
+
+                    splitted_salary = salary.replace(' ', '').split('-')
+                    min_salary = self.parse_salary(splitted_salary[0])
+                    #print(f'#######{min_salary}########## \n')
+                    max_salary = self.parse_salary(splitted_salary[1])
+                    #print(f'#######{max_salary}########## \n')
+                except IndexError:
+                    min_salary = -1
+                    max_salary = -1            
+                    #print('Brak widełek płacowych')
+                inside_offer = NFJAnalyzeOffer()
+                skills = inside_offer.read_skills(offer_full_link)
+                offer_obj = Offer.objects.get_or_create(from_site=self.source, offer_id=offer_id)[0]
+                offer_obj.add_change(
+                    offer_full_link=offer_full_link, position_title=position_title, exp_lvl=seniority, company_name=company_name, skills=skills, 
+                    min_salary=int(min_salary), max_salary=int(max_salary))
+            except Exception as error:
+                print(f'{type(error).__name__} was raised: {error}')
+                print(traceback.print_exception(error))
+            finally:
+                continue
+
+    def get_all_offers(self):
+        for element in self.seniority:
+            seniority = element
+            #print(f'for seniority: {element}')
+            self.get_nfj_data(seniority)
+            self.pick_max_page()
+            #print(f'pick max page @@@@@@@@@@@@@@@ max page nr: {self.max_page_number}')
+            for page in range(1, int(self.max_page_number) + 1):
+                self.get_nfj_data(seniority, page_nr=page)
+                #print(f'for page: @@@@@@@@@@@@@ seniority: {seniority} \n @@@@@@@@ page: {page}')                
+                self.get_offers()
+                self.analyze_offers(seniority)
+                time.sleep(random.random()*10 + 5)
+
+    def parse_salary(self, salary):
+        return re.sub('[^0-9,\\.]', '', salary) 
+
+class NFJAnalyzeOffer:
+
+    def __init__(self):
+        pass
+
+    def read_skills(self, link, ):
+        offer_html = requests.get(link).text
+        offer_soup = BeautifulSoup(offer_html, 'lxml')
+        skills = []
+        required = offer_soup.find_all('common-posting-item-tag')
+        for i in range(len(required)):
+            skill = required[i]
+            skills.append(skill.find(class_='btn').text)
+        return skills
+
+def get_offers(request):
+    #data_jjit = JJitOffers()
+    #data_jjit.analyze_offers()
+    data_nfj = NFJOffers()
+    data_nfj.get_all_offers()
+    response = 'Oferty pobrane do bazy danych'
     return HttpResponse(response)
 
 def home_page(request):

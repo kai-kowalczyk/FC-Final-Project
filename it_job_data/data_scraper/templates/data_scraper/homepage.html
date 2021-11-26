@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="pl">
   <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
@@ -8,10 +8,34 @@
     <title>Wykresy danych z ofert pracy</title>
   </head>
   <body>
-    <header>
-        
+    <header class="navbar bg-primary">      
+      <section class="navbar-center p-centered">
+        <a class="text-light text-bold" href="{% url 'homepage' %}" class="navbar-brand mr-2">Krok do IT</a>
+      </section>      
     </header>
-    <h1 class="bg-primary">Hello {{name}}!</h1>
-    <p class="bg-secondary"><strong>Tutaj</strong> zbieram wykresy z danymi wyciagniętymi z ofert pracy.</p>
+    <div class="container"></div>
+      <div class="columns">
+        <div class ="col-3">
+            <menu>
+                <li class="nav-item">
+                  <a href="#">Statystyki</a>
+                </li>
+                <li class="nav-item">
+                  <a href="#">Oferty pracy</a>
+                </li>
+                <li class="nav-item">
+                  <a href="#">Newsletter</a>
+                </li>
+            </menu>
+        </div>
+        <div class="col-9">
+          <div class="mt-4">
+            Zastanawiasz się jaki powinien być kolejny krok w Twojej przygodzie z programowaniem lub nauką technologii informatycznych? Poniższe statystyki mogą pomóc Ci w zorientowaniu się jakie technologie, biblioteki czy języki są teraz najbardziej pożądane na rynku pracy. :)
+          </div>
+        </div>
+      </div>
+      
+    </div> 
+        
   </body>
 </html>

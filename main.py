@@ -1,5 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
+import random
+import time
 
 #JUSTJOIN.IT OFFERS
 class JJitOffers:
@@ -115,13 +117,15 @@ class NFJOffers:
 #find all the 'offer' items on the page
         self.offers = self.nfj_webpage.find_all('a', class_='posting-list-item')
 
-    def analyze_offers(self):
+    def analyze_offers(self, seniority):
 #get all the needed information from the offer
         for i in range(0, len(self.offers) + 1):
             try:
                 offer = self.offers[i]
+                offer_seniority = seniority
                 offer_id = offer.get('id')
                 print(f'*******{offer_id}******* \n')
+                print(f'######{offer_seniority}######')
                 offer_link = offer.get('href')
                 offer_full_link = f'https://nofluffjobs.com{offer_link}'
                 #print(f'########{offer_full_link}######## \n')
@@ -132,11 +136,13 @@ class NFJOffers:
                 salary = offer.find(class_='salary' ).text
                 try:
                     splitted_salary = salary.split(' - ')
-                    min_salary = splitted_salary[0]
+                    min_salary = splitted_salary[0].replace('', '')
                     #print(f'#######{min_salary}########## \n')
-                    max_salary = splitted_salary[1]
+                    max_salary = splitted_salary[1].replace('', '')
                     #print(f'#######{max_salary}########## \n')
-                except IndexError:            
+                except IndexError: 
+                    min_salary = -1
+                    max_salary = -2           
                     print('Brak widełek płacowych')
                 inside_offer = NFJAnalyzeOffer()
                 skills = inside_offer.read_skills(offer_full_link)
@@ -164,7 +170,8 @@ class NFJOffers:
                 self.get_nfj_data(seniority, page_nr=page)
                 print(f'for page: @@@@@@@@@@@@@ seniority: {seniority} \n @@@@@@@@ page: {page}')                
                 self.get_offers()
-                self.analyze_offers()
+                self.analyze_offers(seniority)
+                time.sleep(random.random() * 10 + 5)
 
 class NFJAnalyzeOffer:
 
@@ -183,10 +190,10 @@ class NFJAnalyzeOffer:
                 
 
 
-#nfj = NFJOffers()
+nfj = NFJOffers()
 #nfj.get_nfj_data(seniority='trainee')
 #nfj.pick_max_page()
-#nfj.get_all_offers()
+nfj.get_all_offers()
 
-jjit = JJitOffers()
-jjit.analyze_offers()
+#jjit = JJitOffers()
+#jjit.analyze_offers()
