@@ -1,9 +1,12 @@
 from django.db import models
+from django.db.models.constraints import UniqueConstraint
+from django.db.models.deletion import CASCADE
 
 # Create your models here.
 EXP_LVL_OPTIONS = [('trainee', 'Stażysta'), ('junior', 'Junior'), ('mid', 'Mid'), ('senior', 'Senior'), ('expert', 'Expert')]
 
 FROM_SITE = [('justjoin.it', 'justjoin.it'), ('nofluffjobs.com', 'NoFluffJobs')]
+
 class Offer(models.Model):
     from_site = models.CharField(max_length=20, choices=FROM_SITE)
     offer_id = models.CharField(max_length=100)
@@ -11,7 +14,7 @@ class Offer(models.Model):
     position_title = models.CharField(max_length=100)
     exp_lvl = models.CharField(max_length=10, choices=EXP_LVL_OPTIONS)
     company_name = models.CharField(max_length=100)
-    skills = models.CharField(max_length=200)
+    #skills = models.CharField(max_length=200)
     min_salary = models.IntegerField(default=0)
     max_salary = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
@@ -37,6 +40,7 @@ class Offer(models.Model):
         )
         changed_offer.save()
 
+
     def __str__(self):
         return f'Oferta z: {self.from_site}, {self.offer_full_link}'
 
@@ -48,3 +52,12 @@ class OfferChanges(models.Model):
     min_salary = models.IntegerField()
     max_salary = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
+
+class Skills(models.Model):
+    skill = models.CharField(max_length=50)
+
+class OfferSkills(models.Model):
+    offer_id = models.ForeignKey(Offer, related_name='offer_skill', on_delete=CASCADE)
+    skill = models.ForeignKey(Skills, related_name='offer_skill', on_delete=CASCADE)
+    class Meta():
+        constraints = [models.UniqueConstraint(fields=['offer_id', 'skill'], name='unique_offer_skill')]
