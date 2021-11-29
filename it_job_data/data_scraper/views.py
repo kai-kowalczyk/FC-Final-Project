@@ -115,6 +115,7 @@ class NFJOffers:
         for i in range(0, len(self.offers) + 1):
             try:
                 offer = self.offers[i]
+                print(f'*****{seniority}:  offer {i}*****')
                 offer_id = offer.get('id')
                 #print(f'*******{offer_id}******* \n')
                 offer_link = offer.get('href')
@@ -122,10 +123,9 @@ class NFJOffers:
                 #print(f'########{offer_full_link}######## \n')
                 position_title = offer.find('h3', class_='posting-title__position').text
                 #print(f'#######{position_title}########## \n')
-                company_name = offer.find('span', class_='posting-title__company').text
-                #print(f'#######{company_name}########## \n')
+                company_name = offer.find('span', class_='posting-title__company').text.replace('@ ', '')
+                print(f'#######{company_name}########## \n')
                 salary = offer.find(class_='salary').text
-                print(salary)
                 try:
 
                     splitted_salary = salary.replace(' ', '').split('-')
