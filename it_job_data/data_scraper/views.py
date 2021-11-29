@@ -7,6 +7,8 @@ import random
 import time
 import traceback
 import re
+from django.utils.text import slugify
+
 # Create your views here.
 
 def index(request):
@@ -36,9 +38,9 @@ class JJitOffers:
             #print(f'1)###{offer_full_link}### \n')
             position_title = offer['title']
             #print(f'2)#####{position_title}##### \n')
-            exp_lvl = offer['experience_level']
+            exp_lvl = slugify(offer['experience_level'])
             #print(f'3)#####{exp_lvl}##### \n')
-            company_name = offer['company_name']
+            company_name = slugify(offer['company_name'])
             #print(f'4)#####{company_name}##### \n')
             min_salary = self.path(offer, 'employment_types.0.salary.from', -1)
             #min_salary2 = offer['employment_types'][0]['salary']['from']
@@ -56,7 +58,7 @@ class JJitOffers:
             skills = []
             for i in range(len(offer['skills'])):
                 skill = offer['skills'][i]['name']
-                skills.append(skill)
+                skills.append(slugify(skill))
             #print(f'7)#####{skills}##### \n')
             Offer.objects.get_or_create(from_site=self.source, offer_id=offer_id, offer_full_link=offer_full_link, position_title=position_title, exp_lvl=exp_lvl, company_name=company_name, skills=skills, min_salary=int(min_salary), max_salary=int(max_salary))
         
@@ -123,7 +125,7 @@ class NFJOffers:
                 #print(f'########{offer_full_link}######## \n')
                 position_title = offer.find('h3', class_='posting-title__position').text
                 #print(f'#######{position_title}########## \n')
-                company_name = offer.find('span', class_='posting-title__company').text.replace('@ ', '')
+                company_name = slugify(offer.find('span', class_='posting-title__company').text.replace('@ ', ''))
                 print(f'#######{company_name}########## \n')
                 salary = offer.find(class_='salary').text
                 try:
@@ -141,7 +143,7 @@ class NFJOffers:
                 skills = inside_offer.read_skills(offer_full_link)
                 offer_obj = Offer.objects.get_or_create(from_site=self.source, offer_id=offer_id)[0]
                 offer_obj.add_change(
-                    offer_full_link=offer_full_link, position_title=position_title, exp_lvl=seniority, company_name=company_name, skills=skills, 
+                    offer_full_link=offer_full_link, position_title=position_title, exp_lvl=slugify(seniority), company_name=company_name, skills=skills, 
                     min_salary=int(min_salary), max_salary=int(max_salary))
             except Exception as error:
                 print(f'{type(error).__name__} was raised: {error}')
@@ -178,7 +180,7 @@ class NFJAnalyzeOffer:
         required = offer_soup.find_all('common-posting-item-tag')
         for i in range(len(required)):
             skill = required[i]
-            skills.append(skill.find(class_='btn').text)
+            skills.append(slugify(skill.find(class_='btn').text))
         return skills
 
 def get_offers(request):
