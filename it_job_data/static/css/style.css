@@ -1,0 +1,40 @@
+html {
+    background-color: #FEFEE1;
+    font-family: 'Montserrat', sans-serif;
+}
+
+body {
+    min-height: 100vh;
+}
+
+.navbar {
+    background-color: #036376;
+    height: 10%;
+}
+header h1 {
+    font-size: 48px;
+    color: #DDF3F7;
+    
+}
+
+.columns {
+    height: 80%;
+}
+
+#sidebar-menu {
+    background-color: #DDF3F7;
+}
+
+
+.footer-container {
+    padding-bottom: 1rem;
+}
+
+.footer {
+    height: 10%;
+    display: flex;
+}
+
+.footer a {
+    color: #036376;
+}

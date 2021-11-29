@@ -18,6 +18,6 @@ from django.urls import include, path
 from data_scraper.urls import urlpatterns as ds_urlpatterns
 
 urlpatterns = ds_urlpatterns + [
-    path('data_scraper/', include('data_scraper.urls')),
+    path('', include('data_scraper.urls')),
     path('admin/', admin.site.urls),
 ]

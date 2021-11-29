@@ -1,41 +1,12 @@
-<!DOCTYPE html>
-<html lang="pl">
-  <head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
-    <title>Wykresy danych z ofert pracy</title>
-  </head>
-  <body>
-    <header class="navbar bg-primary">      
-      <section class="navbar-center p-centered">
-        <a class="text-light text-bold" href="{% url 'homepage' %}" class="navbar-brand mr-2">Krok do IT</a>
-      </section>      
-    </header>
-    <div class="container"></div>
-      <div class="columns">
-        <div class ="col-3">
-            <menu>
-                <li class="nav-item">
-                  <a href="#">Statystyki</a>
-                </li>
-                <li class="nav-item">
-                  <a href="#">Oferty pracy</a>
-                </li>
-                <li class="nav-item">
-                  <a href="#">Newsletter</a>
-                </li>
-            </menu>
-        </div>
-        <div class="col-9">
-          <div class="mt-4">
+{% extends "data_scraper/base.html" %}
+
+{% block content %} 
+        <div class="col-10">
+          <p class="m-2 p-2">
             Zastanawiasz się jaki powinien być kolejny krok w Twojej przygodzie z programowaniem lub nauką technologii informatycznych? Poniższe statystyki mogą pomóc Ci w zorientowaniu się jakie technologie, biblioteki czy języki są teraz najbardziej pożądane na rynku pracy. :)
-          </div>
+          </p>
         </div>
       </div>
       
     </div> 
-        
-  </body>
-</html>
+  {% endblock content %}

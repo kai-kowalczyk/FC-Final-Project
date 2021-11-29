@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pl">
+    <head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Krok do IT</title>
+    <!--Spectre CSS-->
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
+    <!--Fonts-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat&effect=anaglyph">
+    <!--Custom CSS-->   
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css">   
+    </head>
+    <body>
+    <header class="navbar">      
+        <section class="navbar-center p-centered">
+        <a href="{% url 'homepage' %}"><h1>Krok do IT</h1></a>
+        </section>      
+    </header>
+        <div class="container">
+            <div class="columns">
+            <ul id="sidebar-menu" class="col-2 menu menu-nav">            
+                <li class="menu-item">
+                    <a href="{% url 'homepage' %}">Statystyki</a>
+                </li>
+                <li class="menu-item">
+                    <a href="{% url 'offers_page' %}">Oferty pracy</a>
+                </li>
+                <li class="menu-item">
+                    <a href="{% url 'newsletter' %}">Newsletter</a>
+                </li>
+        </ul>
+    {% block content %}{% endblock content%}
+    </div>
+    <div class="footer-container">
+    <div class="divider"></div>
+        <div class="footer">
+        <a href="#" class="text-muted text-tiny m-2">Kontakt</a>
+        <div class="text-muted text-tiny m-2">autor: Kai Kowalczyk</div>
+        </div>
+    </div>
+    </div>
+</body>
+</html>

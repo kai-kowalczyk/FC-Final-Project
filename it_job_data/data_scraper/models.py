@@ -42,7 +42,7 @@ class Offer(models.Model):
         for skill in skills:
             add_skill = Skills.objects.get_or_create(skill=skill)[0]
             add_skill.save()
-            offer_skills = OfferSkills(offer_id=self, skill=add_skill)
+            offer_skills = OfferSkills.objects.get_or_create(offer_id=self, skill=add_skill)[0]
             offer_skills.save()
         
 
@@ -63,7 +63,7 @@ class Skills(models.Model):
     skill = models.CharField(max_length=50, unique=True)
 
 class OfferSkills(models.Model):
-    offer_id = models.ForeignKey(Offer, related_name='offer_skills_id', on_delete=CASCADE)
-    skill = models.ForeignKey(Skills, related_name='offer_skills_skill', on_delete=CASCADE)
+    offer = models.ForeignKey(Offer, related_name='offer_skills', on_delete=CASCADE)
+    skill = models.ForeignKey(Skills, related_name='offer_skills', on_delete=CASCADE)
     class Meta():
         constraints = [models.UniqueConstraint(fields=['offer_id', 'skill'], name='unique_offer_skill')]

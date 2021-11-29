@@ -60,7 +60,10 @@ class JJitOffers:
                 skill = offer['skills'][i]['name']
                 skills.append(slugify(skill))
             #print(f'7)#####{skills}##### \n')
-            Offer.objects.get_or_create(from_site=self.source, offer_id=offer_id, offer_full_link=offer_full_link, position_title=position_title, exp_lvl=exp_lvl, company_name=company_name, skills=skills, min_salary=int(min_salary), max_salary=int(max_salary))
+            offer_obj = Offer.objects.get_or_create(from_site=self.source, offer_id=offer_id)[0]
+            offer_obj.add_change(
+                    offer_full_link=offer_full_link, position_title=position_title, exp_lvl=exp_lvl, company_name=company_name, skills=skills, 
+                    min_salary=int(min_salary), max_salary=int(max_salary))
         
     def path(self, root, p, d):
         curr = root
@@ -184,8 +187,8 @@ class NFJAnalyzeOffer:
         return skills
 
 def get_offers(request):
-    #data_jjit = JJitOffers()
-    #data_jjit.analyze_offers()
+    data_jjit = JJitOffers()
+    data_jjit.analyze_offers()
     data_nfj = NFJOffers()
     data_nfj.get_all_offers()
     response = 'Oferty pobrane do bazy danych'
@@ -193,3 +196,9 @@ def get_offers(request):
 
 def home_page(request):
     return render(request, 'data_scraper/homepage.html', context={'name':'world'})
+
+def offers_page(request):
+    return render(request, 'data_scraper/offers.html')
+
+def newsletter(request):
+    return render(request, 'data_scraper/newsletter.html')
