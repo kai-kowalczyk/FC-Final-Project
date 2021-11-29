@@ -39,6 +39,12 @@ class Offer(models.Model):
             max_salary=max_salary
         )
         changed_offer.save()
+        for skill in skills:
+            add_skill = Skills.objects.get_or_create(skill=skill)[0]
+            add_skill.save()
+            offer_skills = OfferSkills(offer_id=self, skill=add_skill)
+            offer_skills.save()
+        
 
 
     def __str__(self):
@@ -54,10 +60,10 @@ class OfferChanges(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
 
 class Skills(models.Model):
-    skill = models.CharField(max_length=50)
+    skill = models.CharField(max_length=50, unique=True)
 
 class OfferSkills(models.Model):
-    offer_id = models.ForeignKey(Offer, related_name='offer_skill', on_delete=CASCADE)
-    skill = models.ForeignKey(Skills, related_name='offer_skill', on_delete=CASCADE)
+    offer_id = models.ForeignKey(Offer, related_name='offer_skills_id', on_delete=CASCADE)
+    skill = models.ForeignKey(Skills, related_name='offer_skills_skill', on_delete=CASCADE)
     class Meta():
         constraints = [models.UniqueConstraint(fields=['offer_id', 'skill'], name='unique_offer_skill')]
