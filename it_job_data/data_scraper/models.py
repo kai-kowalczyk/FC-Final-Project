@@ -26,7 +26,7 @@ class Offer(models.Model):
         self.position_title = position_title
         self.exp_lvl = exp_lvl
         self.company_name = company_name
-        self.skills = skills
+        #self.skills = skills
         self.min_salary = min_salary
         self.max_salary = max_salary
         self.save()
@@ -42,13 +42,15 @@ class Offer(models.Model):
         for skill in skills:
             add_skill = Skills.objects.get_or_create(skill=skill)[0]
             add_skill.save()
-            offer_skills = OfferSkills.objects.get_or_create(offer_id=self, skill=add_skill)[0]
+            offer_skills = OfferSkills.objects.get_or_create(offer=self, skill=add_skill)[0]
             offer_skills.save()
         
-
-
     def __str__(self):
         return f'Oferta z: {self.from_site}, {self.offer_full_link}'
+
+    def best_paid_jobs(self, exp_lvl):
+        exp_offers = Offer.objects.filter(exp_lvl=exp_lvl).order_by('-max_salary')[:10]
+        return exp_offers
 
 class OfferChanges(models.Model):
     offer = models.ForeignKey(Offer, related_name='offer_changes', on_delete=models.CASCADE)

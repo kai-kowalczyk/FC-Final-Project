@@ -187,15 +187,18 @@ class NFJAnalyzeOffer:
         return skills
 
 def get_offers(request):
-    data_jjit = JJitOffers()
-    data_jjit.analyze_offers()
+    #data_jjit = JJitOffers()
+    #data_jjit.analyze_offers()
     data_nfj = NFJOffers()
     data_nfj.get_all_offers()
     response = 'Oferty pobrane do bazy danych'
     return HttpResponse(response)
 
 def home_page(request):
-    return render(request, 'data_scraper/homepage.html', context={'name':'world'})
+    top_offers = Offer.best_paid_jobs(Offer, 'junior')
+    index_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    offer_data = dict(zip(index_list, top_offers))
+    return render(request, 'data_scraper/homepage.html', context={'top_offers': offer_data})
 
 def offers_page(request):
     return render(request, 'data_scraper/offers.html')

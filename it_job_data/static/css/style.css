@@ -7,10 +7,23 @@ body {
     min-height: 100vh;
 }
 
-.navbar {
-    background-color: #036376;
-    height: 10%;
+nav {
+    background-color: #243B42
 }
+
+.navbar-brand {
+    font-weight: bold; 
+    font-style: oblique 20deg; 
+    color: #F0F9F3; 
+    font-size: 30px;
+}
+
+#text-section{
+    background-color: #F0F9F3;
+    font-size: 16px;
+    color: #1A3C3B
+}
+
 header h1 {
     font-size: 48px;
     color: #DDF3F7;
@@ -30,11 +43,11 @@ header h1 {
     padding-bottom: 1rem;
 }
 
-.footer {
-    height: 10%;
-    display: flex;
+footer {
+    background-color: #243B42;
 }
 
-.footer a {
-    color: #036376;
+.contact{
+    color: #F0F9F3;
+    list-style-type: none;
 }

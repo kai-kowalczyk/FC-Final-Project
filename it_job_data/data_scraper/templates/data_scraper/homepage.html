@@ -1,12 +1,57 @@
 {% extends "data_scraper/base.html" %}
 
-{% block content %} 
-        <div class="col-10">
-          <p class="m-2 p-2">
-            Zastanawiasz się jaki powinien być kolejny krok w Twojej przygodzie z programowaniem lub nauką technologii informatycznych? Poniższe statystyki mogą pomóc Ci w zorientowaniu się jakie technologie, biblioteki czy języki są teraz najbardziej pożądane na rynku pracy. :)
-          </p>
-        </div>
-      </div>
+{% block content %}
+<!--Home page-->
+<section class="text-dark p-2" id="text-section">
+  <div class="container">
+    <p class="p-2">
+      Zastanawiasz się jaki powinien być kolejny krok w Twojej przygodzie z programowaniem lub nauką technologii informatycznych? Poniższe statystyki mogą pomóc Ci w zorientowaniu się jakie technologie, biblioteki czy języki są teraz najbardziej pożądane na rynku pracy. :)
+    </p>
+    <p>            
+      {% if top_offers %}
+      <h2 class="top-10-jr m-2 p-2">TOP 10 najlepiej płatnych ofert pracy dla juniorów:</h2>
+      <table class="table table-hover table-borderless table-striped table-success">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Stanowisko</th>
+            <th scope="col">Zarobki</th>
+            <th scope="col">Link do oferty</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for index, offer in top_offers.items %}
+          <tr>
+            <th scope="row">{{ index }}</th>
+            <td>{{ offer.position_title }}</td>
+            <td>od <strong>{{ offer.min_salary }}</strong> zł do <strong>{{ offer.max_salary }}</strong> zł</td>
+            <td><a href={{ offer.offer_full_link }}>link</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+          
+          {% else %}
+            Coś nie wyszło
+        {% endif %}
+
+        
+        
+          <!--<div class="container m-2 p-2">
+            <h4>{{ offer.position_title }}</h4>
+            <p>Zarobki od <strong>{{ offer.min_salary }}</strong> zł do <strong>{{ offer.max_salary }}</strong> zł.</p>
+            <a href={{ offer.offer_full_link }}>Link do oferty</a>-->
+            
+          </div>
+  </div>
+</section>
+
+
+<div class="col-10">
+  
+        
       
-    </div> 
-  {% endblock content %}
+
+  </p>
+</div>
+{% endblock content %}
