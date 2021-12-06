@@ -2,25 +2,22 @@
 
 {% block content %}
 
-  <div class="col-10">
-    <div>
-      <p class="m-2 p-2">Zapisz się na newsletter, by regularnie otrzymywać najciekawsze oferty pracy prosto do swojej skrzynki pocztowej.</p>
+<div>
+  <p class="m-2 p-2">Zapisz się na newsletter, by regularnie otrzymywać najciekawsze oferty pracy prosto do swojej skrzynki pocztowej.</p>
+</div>
+  <form method="POST" action="#" class="m-2 p-2">
+    <div class="form-group">
+      <label class="form-label" for="input-name"></label>
+      <input class="form-input" type="text" id="input-name" placeholder="Twoje imię">
     </div>
-    <div class="divider"></div>
+    <div class="form-group">
+      <label class="form-label p-centered" for="input-email"></label>
+      <input class="form-input" type="email" id="input-email" placeholder="Twój e-mail" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,14}$">
     
-      <form method="POST" action="#" class="m-2 p-2">
-        <div class="form-group">
-          <label class="form-label" for="input-name">Twoje imię</label>
-          <input class="form-input" type="text" id="input-name" placeholder="Imię">
-        </div>
-        <div class="form-group">
-          <label class="form-label p-centered" for="input-email">Twój e-mail</label>
-          <input class="form-input" type="email" id="input-email" placeholder="Email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,14}$">
-        
-        <div class="form-group">
-          <button class="btn btn-primary form-group-btn">Zapisz się</button>
-        </div>
-      </form>
-  </div>
+    <div class="form-group">
+      <button class="btn btn-primary form-group-btn">Zapisz się</button>
+    </div>
+  </form>
+</div>
 
 {% endblock content %}

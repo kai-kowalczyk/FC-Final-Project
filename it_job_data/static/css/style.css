@@ -1,10 +1,6 @@
-html {
-    background-color: #FEFEE1;
-    font-family: 'Montserrat', sans-serif;
-}
-
 body {
     min-height: 100vh;
+    background-color: #F0F9F3
 }
 
 nav {
@@ -19,35 +15,25 @@ nav {
 }
 
 #text-section{
-    background-color: #F0F9F3;
-    font-size: 16px;
+    font-size: 20px;
     color: #1A3C3B
 }
 
-header h1 {
-    font-size: 48px;
-    color: #DDF3F7;
-    
-}
-
-.columns {
-    height: 80%;
-}
-
-#sidebar-menu {
-    background-color: #DDF3F7;
-}
-
-
-.footer-container {
-    padding-bottom: 1rem;
+.table a{
+    color: #243B42
 }
 
 footer {
     background-color: #243B42;
+    color:#DDF3F7
 }
 
-.contact{
-    color: #F0F9F3;
-    list-style-type: none;
+footer a{
+    color: inherit;
+    text-decoration: none;
 }
+
+footer a:hover{
+    color: #c7dbd2
+}
+

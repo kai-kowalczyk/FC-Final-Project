@@ -20,20 +20,20 @@
           </tr>
         </thead>
         <tbody>
-          {% for index, offer in top_offers.items %}
+        {% for index, offer in top_offers.items %}
           <tr>
             <th scope="row">{{ index }}</th>
             <td>{{ offer.position_title }}</td>
             <td>od <strong>{{ offer.min_salary }}</strong> zł do <strong>{{ offer.max_salary }}</strong> zł</td>
             <td><a href={{ offer.offer_full_link }}>link</a></td>
           </tr>
-          {% endfor %}
+        {% endfor %}
         </tbody>
       </table>
           
-          {% else %}
-            Coś nie wyszło
-        {% endif %}
+      {% else %}
+        Coś nie wyszło
+      {% endif %}
 
         
         
@@ -42,16 +42,6 @@
             <p>Zarobki od <strong>{{ offer.min_salary }}</strong> zł do <strong>{{ offer.max_salary }}</strong> zł.</p>
             <a href={{ offer.offer_full_link }}>Link do oferty</a>-->
             
-          </div>
   </div>
 </section>
-
-
-<div class="col-10">
-  
-        
-      
-
-  </p>
-</div>
 {% endblock content %}
