@@ -1,6 +1,9 @@
 body {
     min-height: 100vh;
-    background-color: #F0F9F3
+    background-color: #F0F9F3;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 nav {
@@ -23,6 +26,14 @@ nav {
     color: #243B42
 }
 
+#content{
+    flex-grow: 2;
+}
+
+.btn{
+    color:#243B42
+}
+
 footer {
     background-color: #243B42;
     color:#DDF3F7
@@ -37,3 +48,48 @@ footer a:hover{
     color: #c7dbd2
 }
 
+.btn-main { 
+    color: #ffffff; 
+    background-color: #243B42; 
+    border-color: #13917E; 
+} 
+
+.btn-main:hover, 
+.btn-main:focus, 
+.btn-main:active, 
+.btn-main.active, 
+.open .dropdown-toggle.btn-main { 
+color: #ffffff; 
+background-color: #123742; 
+border-color: #02201c; 
+} 
+
+.btn-main:active, 
+.btn-main.active, 
+.open .dropdown-toggle.btn-main { 
+background-image: none; 
+} 
+
+.btn-main.disabled, 
+.btn-main[disabled], 
+fieldset[disabled] .btn-main, 
+.btn-main.disabled:hover, 
+.btn-main[disabled]:hover, 
+fieldset[disabled] .btn-main:hover, 
+.btn-main.disabled:focus, 
+.btn-main[disabled]:focus, 
+fieldset[disabled] .btn-main:focus, 
+.btn-main.disabled:active, 
+.btn-main[disabled]:active, 
+fieldset[disabled] .btn-main:active, 
+.btn-main.disabled.active, 
+.btn-main[disabled].active, 
+fieldset[disabled] .btn-main.active { 
+background-color: #243B42; 
+border-color: #02201c; 
+} 
+
+.btn-main .badge { 
+color: #243B42; 
+background-color: #ffffff; 
+}
