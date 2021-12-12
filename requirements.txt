@@ -1,10 +1,11 @@
 asgiref==3.4.1
+backports.zoneinfo==0.2.1
 beautifulsoup4==4.10.0
 certifi==2021.10.8
-charset-normalizer==2.0.7
-Django==3.2.9
+charset-normalizer==2.0.9
+Django==4.0
 django-environ==0.8.1
-fontawesome-free==5.15.0
+fontawesome-free==5.15.4
 idna==3.3
 lxml==4.6.4
 mailchimp-marketing==3.0.72
