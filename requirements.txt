@@ -6,6 +6,7 @@ charset-normalizer==2.0.9
 Django==4.0
 django-environ==0.8.1
 fontawesome-free==5.15.4
+gunicorn==20.1.0
 idna==3.3
 lxml==4.6.4
 mailchimp-marketing==3.0.72
