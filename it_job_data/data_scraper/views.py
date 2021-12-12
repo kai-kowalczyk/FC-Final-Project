@@ -1,5 +1,8 @@
 from django.shortcuts import render
+from django.contrib import messages
 from django.http import HttpResponse
+from django.utils.text import slugify
+from django.conf import settings
 from .models import Offer
 import requests
 from bs4 import BeautifulSoup
@@ -7,7 +10,7 @@ import random
 import time
 import traceback
 import re
-from django.utils.text import slugify
+
 
 # Create your views here.
 
@@ -26,4 +29,9 @@ def offers_page(request):
     return render(request, 'data_scraper/offers.html')
 
 def newsletter(request):
+    if request.method =='POST':
+        email = request.POST['email']
+        print(email)
+        messages.success(request, 'Dziękuję za subskrypcję newslettera! :)')
+
     return render(request, 'data_scraper/newsletter.html')
